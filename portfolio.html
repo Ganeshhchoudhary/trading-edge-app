@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio - Trading at the Edge</title>
+<meta name="description" content="View your real-time portfolio performance, positions, P&L and allocation analytics."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-container":"#5d5fef","surface-container-highest":"#333539","error":"#ffb4ab","background":"#111317","on-background":"#e2e2e8","tertiary":"#ffb95f","outline":"#908fa0","error-container":"#93000a","surface-container-high":"#282a2e","primary":"#c1c1ff","on-secondary":"#003824","secondary-container":"#00a572","on-surface-variant":"#c7c4d7","on-primary":"#1200a9","outline-variant":"#464555","surface-container":"#1e2024","on-surface":"#e2e2e8","surface":"#111317","surface-container-low":"#1a1c20","secondary":"#4edea3","surface-bright":"#37393e"},fontFamily:{"body-md":["Inter"],"body-sm":["Inter"],"h1":["Inter"],"h2":["Inter"],"h3":["Inter"],"label-caps":["Inter"],"data-mono":["Inter"]},fontSize:{"body-sm":["13px",{"lineHeight":"18px"}],"data-mono":["13px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"h3":["16px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"h2":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px"}],"h1":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}
+</script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pt-16 pb-20 md:pb-0">
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface border-b border-outline-variant">
+  <a href="index.html" class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">monitoring</span>
+    <span class="font-bold text-xl tracking-tighter text-primary">TRADING AT THE EDGE</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-1">
+    <a href="index.html"     class="nav-link"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+    <a href="insights.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">psychology</span>AI Insights</a>
+    <a href="engine.html"    class="nav-link"><span class="material-symbols-outlined text-[18px]">settings_input_component</span>Engine</a>
+    <a href="portfolio.html" class="nav-link active"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>Portfolio</a>
+    <a href="settings.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">settings</span>Settings</a>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="live-badge"><span class="live-dot"></span><span class="text-label-caps text-secondary">LIVE</span></div>
+    <span id="clock" class="font-data-mono text-data-mono text-on-surface-variant hidden md:block"></span>
+    <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto px-4 md:px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+
+  <div class="col-span-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-1">
+    <div>
+      <h1 class="text-h1 font-bold text-on-background text-glow-primary">Portfolio</h1>
+      <p class="text-body-md text-on-surface-variant">Real-time positions, P&amp;L, and allocation analytics</p>
+    </div>
+    <div class="flex gap-3">
+      <button class="btn-success" onclick="showOrderModal('BUY')">
+        <span class="material-symbols-outlined text-[16px]">add_circle</span>Place Order
+      </button>
+      <button class="btn-secondary" onclick="showToast('Report exported','info')">
+        <span class="material-symbols-outlined text-[16px]">download</span>Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="glass-panel rounded-xl p-4 hover-lift">
+      <div class="text-label-caps text-on-surface-variant mb-2">Portfolio Value</div>
+      <div class="text-h1 font-bold text-on-background">₹5,84,220</div>
+      <div class="text-body-sm text-secondary mt-1">↑ +₹18,420 today</div>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift">
+      <div class="text-label-caps text-on-surface-variant mb-2">Invested Capital</div>
+      <div class="text-h1 font-bold text-on-background">₹5,65,800</div>
+      <div class="text-body-sm text-on-surface-variant mt-1">Across 4 positions</div>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift">
+      <div class="text-label-caps text-on-surface-variant mb-2">Overall P&amp;L</div>
+      <div class="text-h1 font-bold text-secondary text-glow-secondary">+₹18,420</div>
+      <div class="text-body-sm text-secondary mt-1">+3.26% return</div>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift">
+      <div class="text-label-caps text-on-surface-variant mb-2">Realized (MTD)</div>
+      <div class="text-h1 font-bold text-primary">+₹42,180</div>
+      <div class="text-body-sm text-primary mt-1">↑ 14 winning trades</div>
+    </div>
+  </div>
+
+  <!-- PnL Chart -->
+  <div class="col-span-12 md:col-span-8 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Portfolio P&amp;L History</h2>
+      <div class="flex gap-2">
+        <button class="tab-pill active" onclick="setPnlPeriod('1W',this)">1W</button>
+        <button class="tab-pill" onclick="setPnlPeriod('1M',this)">1M</button>
+        <button class="tab-pill" onclick="setPnlPeriod('3M',this)">3M</button>
+      </div>
+    </div>
+    <canvas id="pnl-chart" height="220"></canvas>
+  </div>
+
+  <!-- Allocation Donut -->
+  <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Sector Allocation</h2>
+    <canvas id="alloc-chart" height="220"></canvas>
+  </div>
+
+  <!-- Positions Table -->
+  <div class="col-span-12 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Open Positions</h2>
+      <span class="text-body-sm text-on-surface-variant">4 positions · ₹5,65,800 invested</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-body-sm">
+        <thead>
+          <tr class="text-left text-label-caps text-on-surface-variant border-b border-outline-variant">
+            <th class="pb-3 pr-4">Symbol</th><th class="pb-3 pr-4">Qty</th>
+            <th class="pb-3 pr-4">Avg Price</th><th class="pb-3 pr-4">LTP</th>
+            <th class="pb-3 pr-4">Invested</th><th class="pb-3 pr-4">Current</th>
+            <th class="pb-3 pr-4">P&amp;L</th><th class="pb-3 pr-4">%</th>
+            <th class="pb-3">Action</th>
+          </tr>
+        </thead>
+        <tbody id="positions-table" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Trade History -->
+  <div class="col-span-12 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Trade History</h2>
+      <div class="flex gap-2" id="trade-filter">
+        <button class="tab-pill active" onclick="filterTrades('all',this)">All</button>
+        <button class="tab-pill" onclick="filterTrades('buy',this)">Buys</button>
+        <button class="tab-pill" onclick="filterTrades('sell',this)">Sells</button>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-body-sm">
+        <thead>
+          <tr class="text-left text-label-caps text-on-surface-variant border-b border-outline-variant">
+            <th class="pb-3 pr-4">Date</th><th class="pb-3 pr-4">Symbol</th>
+            <th class="pb-3 pr-4">Type</th><th class="pb-3 pr-4">Qty</th>
+            <th class="pb-3 pr-4">Price</th><th class="pb-3 pr-4">Value</th>
+            <th class="pb-3 pr-4">P&amp;L</th><th class="pb-3">Source</th>
+          </tr>
+        </thead>
+        <tbody id="trade-history" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- Order Modal -->
+<div id="order-modal" class="modal-overlay hidden" onclick="if(event.target===this)this.classList.add('hidden')">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-5">
+      <h2 class="text-h2 font-semibold text-on-background" id="order-title">Place Order</h2>
+      <button class="text-on-surface-variant hover:text-on-background" onclick="document.getElementById('order-modal').classList.add('hidden')">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-1 block">Symbol</label>
+        <select id="order-sym" class="w-full">
+          <option>RELIANCE</option><option>TCS</option><option>HDFCBANK</option>
+          <option>INFY</option><option>WIPRO</option><option>ONGC</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-body-sm text-on-surface-variant mb-1 block">Order Type</label>
+          <select id="order-type-sel" class="w-full">
+            <option value="MARKET">MARKET</option>
+            <option value="LIMIT">LIMIT</option>
+            <option value="SL">SL</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-body-sm text-on-surface-variant mb-1 block">Product</label>
+          <select id="order-product-sel" class="w-full">
+            <option value="MIS">MIS (Intraday)</option>
+            <option value="CNC">CNC (Delivery)</option>
+            <option value="NRML">NRML</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-body-sm text-on-surface-variant mb-1 block">Quantity</label>
+          <input type="number" value="50" min="1" class="w-full" id="order-qty"/>
+        </div>
+        <div>
+          <label class="text-body-sm text-on-surface-variant mb-1 block">Price</label>
+          <input type="number" value="2941.50" step="0.05" class="w-full" id="order-price"/>
+        </div>
+      </div>
+      <div class="p-3 rounded-lg bg-surface-container text-body-sm text-on-surface-variant">
+        Estimated Value: <span class="text-on-background font-bold" id="order-est">₹1,47,075</span>
+      </div>
+      <div class="flex gap-3">
+        <button id="buy-btn"  class="btn-success flex-1 justify-center" onclick="placeOrder('BUY')">▲ BUY</button>
+        <button id="sell-btn" class="btn-danger flex-1 justify-center"  onclick="placeOrder('SELL')">▼ SELL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container border-t border-outline-variant md:hidden">
+  <a href="index.html"     class="mobile-nav"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+  <a href="insights.html"  class="mobile-nav"><span class="material-symbols-outlined">psychology</span><span>Insights</span></a>
+  <a href="engine.html"    class="mobile-nav"><span class="material-symbols-outlined">settings_input_component</span><span>Engine</span></a>
+  <a href="portfolio.html" class="mobile-nav active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">account_balance_wallet</span><span>Portfolio</span></a>
+  <a href="settings.html"  class="mobile-nav"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
+</nav>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+<script src="api_client.js"></script>
+<script src="portfolio.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Settings - Trading at the Edge</title>
+<meta name="description" content="Configure API keys, notification preferences, display settings, and account management."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-container":"#5d5fef","surface-container-highest":"#333539","error":"#ffb4ab","background":"#111317","on-background":"#e2e2e8","tertiary":"#ffb95f","outline":"#908fa0","error-container":"#93000a","surface-container-high":"#282a2e","primary":"#c1c1ff","on-secondary":"#003824","secondary-container":"#00a572","on-surface-variant":"#c7c4d7","on-primary":"#1200a9","outline-variant":"#464555","surface-container":"#1e2024","on-surface":"#e2e2e8","surface":"#111317","surface-container-low":"#1a1c20","secondary":"#4edea3","surface-bright":"#37393e"},fontFamily:{"body-md":["Inter"],"body-sm":["Inter"],"h1":["Inter"],"h2":["Inter"],"h3":["Inter"],"label-caps":["Inter"],"data-mono":["Inter"]},fontSize:{"body-sm":["13px",{"lineHeight":"18px"}],"data-mono":["13px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"h3":["16px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"h2":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px"}],"h1":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}
+</script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pt-16 pb-20 md:pb-0">
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface border-b border-outline-variant">
+  <a href="index.html" class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">monitoring</span>
+    <span class="font-bold text-xl tracking-tighter text-primary">TRADING AT THE EDGE</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-1">
+    <a href="index.html"     class="nav-link"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+    <a href="insights.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">psychology</span>AI Insights</a>
+    <a href="engine.html"    class="nav-link"><span class="material-symbols-outlined text-[18px]">settings_input_component</span>Engine</a>
+    <a href="portfolio.html" class="nav-link"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>Portfolio</a>
+    <a href="settings.html"  class="nav-link active"><span class="material-symbols-outlined text-[18px]">settings</span>Settings</a>
+  </nav>
+  <div class="flex items-center gap-3">
+    <span id="clock" class="font-data-mono text-data-mono text-on-surface-variant hidden md:block"></span>
+    <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto px-4 md:px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+
+  <div class="col-span-12 mb-1">
+    <h1 class="text-h1 font-bold text-on-background text-glow-primary">Settings</h1>
+    <p class="text-body-md text-on-surface-variant">API credentials, automation, notifications, and display preferences</p>
+  </div>
+
+  <!-- Profile Card -->
+  <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Profile</h2>
+    <div class="flex items-center gap-4 mb-5">
+      <div class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-[32px] text-primary">person</span>
+      </div>
+      <div>
+        <div class="text-h3 font-semibold text-on-background">Ganes Kumar</div>
+        <div class="text-body-sm text-on-surface-variant">ganes@tradeedge.ai</div>
+        <div class="mt-1"><span class="badge-high">PRO PLAN</span></div>
+      </div>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-1 block">Display Name</label>
+        <input type="text" value="Ganes Kumar" class="w-full"/>
+      </div>
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-1 block">Email</label>
+        <input type="email" value="ganes@tradeedge.ai" class="w-full"/>
+      </div>
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-1 block">Timezone</label>
+        <select class="w-full"><option selected>Asia/Kolkata (IST +5:30)</option><option>UTC</option><option>America/New_York</option></select>
+      </div>
+    </div>
+    <button class="mt-4 btn-primary w-full justify-center" onclick="showToast('Profile saved','success')">
+      <span class="material-symbols-outlined text-[18px]">save</span>Save Profile
+    </button>
+  </div>
+
+  <!-- API Keys -->
+  <div class="col-span-12 md:col-span-8 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">API Credentials</h2>
+    <div class="space-y-4">
+      <!-- Kite Connect -->
+      <div class="p-4 rounded-xl border border-outline-variant bg-surface-container-low">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-[20px]">link</span>
+            <span class="text-h3 font-semibold text-on-background">Kite Connect (Zerodha)</span>
+          </div>
+          <span class="badge-high">CONNECTED</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <label class="text-body-sm text-on-surface-variant mb-1 block">API Key</label>
+            <div class="relative">
+              <input type="password" value="kite_api_key_demo" class="w-full pr-10" id="kite-key"/>
+              <button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-background" onclick="toggleVis('kite-key')">
+                <span class="material-symbols-outlined text-[18px]">visibility</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="text-body-sm text-on-surface-variant mb-1 block">API Secret</label>
+            <div class="relative">
+              <input type="password" value="kite_secret_demo" class="w-full pr-10" id="kite-secret"/>
+              <button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-background" onclick="toggleVis('kite-secret')">
+                <span class="material-symbols-outlined text-[18px]">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn-success py-1.5 px-4 text-body-sm" onclick="showToast('Kite Connect validated ✓','success')">
+            <span class="material-symbols-outlined text-[14px]">check_circle</span>Validate
+          </button>
+          <button class="btn-primary py-1.5 px-4 text-body-sm" onclick="showToast('API keys saved','success')">
+            <span class="material-symbols-outlined text-[14px]">save</span>Save
+          </button>
+        </div>
+      </div>
+
+      <!-- Gemini API -->
+      <div class="p-4 rounded-xl border border-outline-variant bg-surface-container-low">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">stars</span>
+            <span class="text-h3 font-semibold text-on-background">Google Gemini API</span>
+          </div>
+          <span class="badge-high">CONNECTED</span>
+        </div>
+        <div>
+          <label class="text-body-sm text-on-surface-variant mb-1 block">API Key</label>
+          <div class="relative">
+            <input type="password" value="gemini_api_key_demo" class="w-full pr-10" id="gemini-key"/>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-background" onclick="toggleVis('gemini-key')">
+              <span class="material-symbols-outlined text-[18px]">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <label class="text-body-sm text-on-surface-variant">Model:</label>
+          <select>
+            <option selected>gemini-2.0-flash-exp</option>
+            <option>gemini-1.5-pro</option>
+            <option>gemini-1.5-flash</option>
+          </select>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn-success py-1.5 px-4 text-body-sm" onclick="showToast('Gemini API validated ✓','success')">
+            <span class="material-symbols-outlined text-[14px]">check_circle</span>Validate
+          </button>
+          <button class="btn-primary py-1.5 px-4 text-body-sm" onclick="showToast('API keys saved','success')">
+            <span class="material-symbols-outlined text-[14px]">save</span>Save
+          </button>
+        </div>
+      </div>
+
+      <!-- NSE Bridge -->
+      <div class="p-4 rounded-xl border border-outline-variant bg-surface-container-low">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-tertiary text-[20px]">dns</span>
+            <span class="text-h3 font-semibold text-on-background">NSE Bridge Server</span>
+          </div>
+          <span class="badge-high">RUNNING</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <label class="text-body-sm text-on-surface-variant mb-1 block">Host</label>
+            <input type="text" value="localhost" class="w-full"/>
+          </div>
+          <div>
+            <label class="text-body-sm text-on-surface-variant mb-1 block">Port</label>
+            <input type="number" value="5001" class="w-full"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="col-span-12 md:col-span-6 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Notifications</h2>
+    <div class="space-y-4">
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Buy/Sell Signals</div><div class="text-body-sm text-on-surface-variant">Alert when a new signal is generated</div></div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Order Execution</div><div class="text-body-sm text-on-surface-variant">Confirm each auto-executed order</div></div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Stop-Loss Hit</div><div class="text-body-sm text-on-surface-variant">Urgent alert when SL is triggered</div></div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Daily Summary</div><div class="text-body-sm text-on-surface-variant">End-of-day P&L and performance report</div></div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Sentiment Shift</div><div class="text-body-sm text-on-surface-variant">Alert on major market sentiment changes</div></div>
+        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <div><div class="text-h3 font-semibold text-on-background">News Events</div><div class="text-body-sm text-on-surface-variant">Breaking market news digests</div></div>
+        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display & System -->
+  <div class="col-span-12 md:col-span-6 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Display &amp; System</h2>
+    <div class="space-y-4">
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-2 block">Chart Default Timeframe</label>
+        <select class="w-full"><option>5 Minutes</option><option selected>15 Minutes</option><option>1 Hour</option><option>1 Day</option></select>
+      </div>
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-2 block">Default Exchange</label>
+        <select class="w-full"><option selected>NSE</option><option>BSE</option><option>MCX</option></select>
+      </div>
+      <div>
+        <label class="text-body-sm text-on-surface-variant mb-2 block">Currency Display</label>
+        <select class="w-full"><option selected>₹ INR</option><option>$ USD</option></select>
+      </div>
+      <div class="flex justify-between items-center py-2 border-t border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Compact Mode</div><div class="text-body-sm text-on-surface-variant">Denser information layout</div></div>
+        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-outline-variant">
+        <div><div class="text-h3 font-semibold text-on-background">Animations</div><div class="text-body-sm text-on-surface-variant">Reduce motion for performance</div></div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <div><div class="text-h3 font-semibold text-on-background">Auto-refresh Interval</div><div class="text-body-sm text-on-surface-variant">Market data refresh rate</div></div>
+        <select><option>1s</option><option selected>2s</option><option>5s</option><option>10s</option></select>
+      </div>
+    </div>
+    <div class="mt-5 flex gap-3">
+      <button class="btn-primary flex-1 justify-center" onclick="showToast('Settings saved','success')">
+        <span class="material-symbols-outlined text-[18px]">save</span>Save All
+      </button>
+      <button class="btn-secondary flex-1 justify-center" onclick="if(confirm('Reset all settings?'))showToast('Reset complete','info')">
+        <span class="material-symbols-outlined text-[18px]">restart_alt</span>Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- System Status -->
+  <div class="col-span-12 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">System Status</h2>
+    <div class="grid md:grid-cols-3 gap-4" id="sys-status"></div>
+  </div>
+</main>
+
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container border-t border-outline-variant md:hidden">
+  <a href="index.html"     class="mobile-nav"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+  <a href="insights.html"  class="mobile-nav"><span class="material-symbols-outlined">psychology</span><span>Insights</span></a>
+  <a href="engine.html"    class="mobile-nav"><span class="material-symbols-outlined">settings_input_component</span><span>Engine</span></a>
+  <a href="portfolio.html" class="mobile-nav"><span class="material-symbols-outlined">account_balance_wallet</span><span>Portfolio</span></a>
+  <a href="settings.html"  class="mobile-nav active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">settings</span><span>Settings</span></a>
+</nav>
+
+<script src="data.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>

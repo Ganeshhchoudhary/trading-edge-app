@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard - Trading at the Edge</title>
+<meta name="description" content="Real-time AI-powered trading dashboard with edge inference, market data, and portfolio analytics."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{
+      colors:{"inverse-primary":"#4849da","surface-container-lowest":"#0c0e12","primary-container":"#5d5fef","surface-container-highest":"#333539","surface-dim":"#111317","error":"#ffb4ab","background":"#111317","on-background":"#e2e2e8","tertiary":"#ffb95f","outline":"#908fa0","error-container":"#93000a","surface-container-high":"#282a2e","primary":"#c1c1ff","on-secondary":"#003824","secondary-container":"#00a572","on-surface-variant":"#c7c4d7","on-primary":"#1200a9","outline-variant":"#464555","surface-container":"#1e2024","on-surface":"#e2e2e8","surface":"#111317","surface-container-low":"#1a1c20","secondary":"#4edea3","surface-variant":"#333539","surface-bright":"#37393e","on-primary-container":"#faf7ff","primary-container":"#5d5fef"},
+      fontFamily:{"body-md":["Inter"],"body-sm":["Inter"],"h1":["Inter"],"h2":["Inter"],"h3":["Inter"],"label-caps":["Inter"],"data-mono":["Inter"]},
+      fontSize:{"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"data-mono":["13px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"h3":["16px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"h2":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"h1":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]},
+    }}
+  }
+</script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pt-16 pb-20 md:pb-0">
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface border-b border-outline-variant">
+  <a href="index.html" class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">monitoring</span>
+    <span class="font-bold text-xl tracking-tighter text-primary">TRADING AT THE EDGE</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-1">
+    <a href="index.html"     class="nav-link active"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+    <a href="insights.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">psychology</span>AI Insights</a>
+    <a href="engine.html"    class="nav-link"><span class="material-symbols-outlined text-[18px]">settings_input_component</span>Engine</a>
+    <a href="portfolio.html" class="nav-link"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>Portfolio</a>
+    <a href="settings.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">settings</span>Settings</a>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="live-badge"><span class="live-dot"></span><span class="text-label-caps text-secondary">LIVE</span></div>
+    <span id="clock" class="font-data-mono text-data-mono text-on-surface-variant hidden md:block"></span>
+    <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto px-4 md:px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+
+  <!-- Page Header -->
+  <div class="col-span-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-1">
+    <div>
+      <h1 class="text-h1 font-bold text-on-background text-glow-primary">Market Dashboard</h1>
+      <p class="text-body-md text-on-surface-variant">Real-time overview · NSE/BSE · Edge AI active</p>
+    </div>
+    <button onclick="window.location.href='insights.html'" class="btn-primary">
+      <span class="material-symbols-outlined text-[18px]">auto_awesome</span>AI Analysis
+    </button>
+  </div>
+
+  <!-- Index Cards -->
+  <div class="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="glass-panel rounded-xl p-4 hover-lift cursor-pointer glow-on-hover" onclick="showIndexChart('NIFTY 50')">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-label-caps text-on-surface-variant">NIFTY 50</span>
+        <span class="badge-up">▲ 0.94%</span>
+      </div>
+      <div class="text-h1 font-bold text-on-background" id="nifty-val">24,461</div>
+      <div class="text-body-sm text-secondary mt-1">+228.35</div>
+      <canvas id="nifty-spark" class="mt-2 w-full" height="40"></canvas>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift cursor-pointer glow-on-hover" onclick="showIndexChart('SENSEX')">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-label-caps text-on-surface-variant">SENSEX</span>
+        <span class="badge-up">▲ 0.88%</span>
+      </div>
+      <div class="text-h1 font-bold text-on-background" id="sensex-val">80,218</div>
+      <div class="text-body-sm text-secondary mt-1">+703.71</div>
+      <canvas id="sensex-spark" class="mt-2 w-full" height="40"></canvas>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift cursor-pointer glow-on-hover" onclick="showIndexChart('BANK NIFTY')">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-label-caps text-on-surface-variant">BANK NIFTY</span>
+        <span class="badge-down">▼ 0.21%</span>
+      </div>
+      <div class="text-h1 font-bold text-on-background">52,140</div>
+      <div class="text-body-sm text-error mt-1">-110.25</div>
+      <canvas id="bnifty-spark" class="mt-2 w-full" height="40"></canvas>
+    </div>
+    <div class="glass-panel rounded-xl p-4 hover-lift cursor-pointer glow-on-hover" onclick="showIndexChart('INDIA VIX')">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-label-caps text-on-surface-variant">INDIA VIX</span>
+        <span class="badge-neutral">◆ +1.4%</span>
+      </div>
+      <div class="text-h1 font-bold text-tertiary">14.82</div>
+      <div class="text-body-sm text-on-surface-variant mt-1">Volatility Index</div>
+      <canvas id="vix-spark" class="mt-2 w-full" height="40"></canvas>
+    </div>
+  </div>
+
+  <!-- Main Chart -->
+  <div class="col-span-12 md:col-span-8 glass-panel rounded-xl p-5">
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+      <div>
+        <h2 id="chart-title" class="text-h2 font-semibold text-on-background">NIFTY 50 — Intraday</h2>
+        <p class="text-body-sm text-on-surface-variant">5-min candles · Edge AI signal overlay</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="timeframe-btn active" onclick="setTimeframe('5m',this)">5m</button>
+        <button class="timeframe-btn" onclick="setTimeframe('15m',this)">15m</button>
+        <button class="timeframe-btn" onclick="setTimeframe('1H',this)">1H</button>
+        <button class="timeframe-btn" onclick="setTimeframe('1D',this)">1D</button>
+      </div>
+    </div>
+    <canvas id="main-chart"></canvas>
+    <div class="flex gap-2 mt-3 flex-wrap">
+      <span class="signal-tag buy">▲ BUY 11:30</span>
+      <span class="signal-tag buy">▲ BUY 13:15</span>
+      <span class="signal-tag sell">▼ SELL 14:45</span>
+      <span class="signal-tag neutral">◆ HOLD 15:20</span>
+    </div>
+  </div>
+
+  <!-- AI Signal Panel -->
+  <div class="col-span-12 md:col-span-4 flex flex-col gap-4">
+    <div class="glass-panel rounded-xl p-5 flex-1">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-h2 font-semibold text-on-background">AI Signal</h2>
+        <span class="material-symbols-outlined text-primary animate-pulse-slow">auto_awesome</span>
+      </div>
+      <div class="text-center py-3">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full pulse-ring-secondary mb-3" style="background:rgba(78,222,163,0.1);border:2px solid #4edea3">
+          <span class="material-symbols-outlined text-[40px] text-secondary">trending_up</span>
+        </div>
+        <div class="text-h1 font-bold text-secondary text-glow-secondary">BULLISH</div>
+        <div class="text-body-sm text-on-surface-variant mt-1">Confidence: 84%</div>
+        <div class="progress-bar mt-3 mx-4"><div class="progress-fill" style="width:84%;background:#4edea3"></div></div>
+      </div>
+      <div class="space-y-1 mt-3">
+        <div class="signal-metric"><span class="text-body-sm text-on-surface-variant">RSI (14)</span><span class="text-data-mono text-secondary">62.4</span></div>
+        <div class="signal-metric"><span class="text-body-sm text-on-surface-variant">MACD</span><span class="text-data-mono text-secondary">+0.87 ↑</span></div>
+        <div class="signal-metric"><span class="text-body-sm text-on-surface-variant">BB Width</span><span class="text-data-mono text-on-background">0.034</span></div>
+        <div class="signal-metric"><span class="text-body-sm text-on-surface-variant">Volume Ratio</span><span class="text-data-mono text-tertiary">1.42x ▲</span></div>
+        <div class="signal-metric"><span class="text-body-sm text-on-surface-variant">EMA Cross</span><span class="text-data-mono text-secondary">9 > 21 ✓</span></div>
+      </div>
+      <a href="insights.html" class="mt-4 flex items-center justify-center gap-2 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-on-primary transition-all text-body-sm font-medium">
+        <span class="material-symbols-outlined text-[16px]">open_in_new</span>Full Analysis
+      </a>
+    </div>
+    <!-- Edge Latency -->
+    <div class="glass-panel rounded-xl p-4">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-h3 font-semibold text-on-background">Edge Inference</h3>
+        <div class="live-badge"><span class="live-dot"></span><span class="text-label-caps text-secondary">ACTIVE</span></div>
+      </div>
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="bg-surface-container rounded-lg p-2">
+          <div class="text-h2 font-bold text-secondary" id="latency-val">42</div>
+          <div class="text-label-caps text-on-surface-variant">ms</div>
+        </div>
+        <div class="bg-surface-container rounded-lg p-2">
+          <div class="text-h2 font-bold text-primary">98.2</div>
+          <div class="text-label-caps text-on-surface-variant">% Acc.</div>
+        </div>
+        <div class="bg-surface-container rounded-lg p-2">
+          <div class="text-h2 font-bold text-tertiary">6/6</div>
+          <div class="text-label-caps text-on-surface-variant">Signals</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Movers -->
+  <div class="col-span-12 md:col-span-6 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Top Movers</h2>
+      <div class="flex gap-2">
+        <button class="tab-pill active" onclick="switchMovers('gainers',this)">Gainers</button>
+        <button class="tab-pill" onclick="switchMovers('losers',this)">Losers</button>
+      </div>
+    </div>
+    <div id="movers-list"></div>
+  </div>
+
+  <!-- Active Positions -->
+  <div class="col-span-12 md:col-span-6 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Active Positions</h2>
+      <a href="portfolio.html" class="text-body-sm text-primary hover:underline">View All →</a>
+    </div>
+    <div id="positions-list"></div>
+    <div class="mt-4 pt-3 border-t border-outline-variant flex justify-between items-center">
+      <span class="text-body-sm text-on-surface-variant">Unrealized P&amp;L</span>
+      <span class="text-h3 font-bold text-secondary text-glow-secondary">+₹18,420</span>
+    </div>
+  </div>
+
+  <!-- Signal Feed Table -->
+  <div class="col-span-12 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Signal Activity Feed</h2>
+      <div class="live-badge"><span class="live-dot"></span><span class="text-label-caps text-secondary">STREAMING</span></div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-body-sm">
+        <thead>
+          <tr class="text-left text-label-caps text-on-surface-variant border-b border-outline-variant">
+            <th class="pb-3 pr-4">Time</th><th class="pb-3 pr-4">Symbol</th>
+            <th class="pb-3 pr-4">Signal</th><th class="pb-3 pr-4">Price</th>
+            <th class="pb-3 pr-4">Confidence</th><th class="pb-3 pr-4">Source</th>
+            <th class="pb-3">Status</th>
+          </tr>
+        </thead>
+        <tbody id="signal-table" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- MOBILE NAV -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container border-t border-outline-variant md:hidden">
+  <a href="index.html"     class="mobile-nav active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">dashboard</span><span>Dashboard</span></a>
+  <a href="insights.html"  class="mobile-nav"><span class="material-symbols-outlined">psychology</span><span>Insights</span></a>
+  <a href="engine.html"    class="mobile-nav"><span class="material-symbols-outlined">settings_input_component</span><span>Engine</span></a>
+  <a href="portfolio.html" class="mobile-nav"><span class="material-symbols-outlined">account_balance_wallet</span><span>Portfolio</span></a>
+  <a href="settings.html"  class="mobile-nav"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
+</nav>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+<script src="api_client.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Engine - Trading at the Edge</title>
+<meta name="description" content="Configure Edge AI trading models, strategy parameters, and automation settings."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-container":"#5d5fef","surface-container-highest":"#333539","error":"#ffb4ab","background":"#111317","on-background":"#e2e2e8","tertiary":"#ffb95f","outline":"#908fa0","error-container":"#93000a","surface-container-high":"#282a2e","primary":"#c1c1ff","on-secondary":"#003824","secondary-container":"#00a572","on-surface-variant":"#c7c4d7","on-primary":"#1200a9","outline-variant":"#464555","surface-container":"#1e2024","on-surface":"#e2e2e8","surface":"#111317","surface-container-low":"#1a1c20","secondary":"#4edea3","surface-bright":"#37393e"},fontFamily:{"body-md":["Inter"],"body-sm":["Inter"],"h1":["Inter"],"h2":["Inter"],"h3":["Inter"],"label-caps":["Inter"],"data-mono":["Inter"]},fontSize:{"body-sm":["13px",{"lineHeight":"18px"}],"data-mono":["13px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"h3":["16px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"h2":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px"}],"h1":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}
+</script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pt-16 pb-20 md:pb-0">
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface border-b border-outline-variant">
+  <a href="index.html" class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">monitoring</span>
+    <span class="font-bold text-xl tracking-tighter text-primary">TRADING AT THE EDGE</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-1">
+    <a href="index.html"     class="nav-link"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+    <a href="insights.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">psychology</span>AI Insights</a>
+    <a href="engine.html"    class="nav-link active"><span class="material-symbols-outlined text-[18px]">settings_input_component</span>Engine</a>
+    <a href="portfolio.html" class="nav-link"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>Portfolio</a>
+    <a href="settings.html"  class="nav-link"><span class="material-symbols-outlined text-[18px]">settings</span>Settings</a>
+  </nav>
+  <div class="flex items-center gap-3">
+    <div class="live-badge"><span class="live-dot"></span><span class="text-label-caps text-secondary">LIVE</span></div>
+    <span id="clock" class="font-data-mono text-data-mono text-on-surface-variant hidden md:block"></span>
+    <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto px-4 md:px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+
+  <div class="col-span-12 mb-1">
+    <h1 class="text-h1 font-bold text-on-background text-glow-primary">Trading Engine</h1>
+    <p class="text-body-md text-on-surface-variant">Configure models, strategies, and automation parameters</p>
+  </div>
+
+  <!-- Engine Status Bar -->
+  <div class="col-span-12 glass-panel rounded-xl p-4 flex flex-wrap gap-4 items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center pulse-ring-secondary" style="background:rgba(78,222,163,0.1);border:2px solid #4edea3">
+        <span class="material-symbols-outlined text-secondary">settings_input_component</span>
+      </div>
+      <div>
+        <div class="text-h3 font-semibold text-on-background">Engine: <span class="text-secondary">RUNNING</span></div>
+        <div class="text-body-sm text-on-surface-variant">Uptime: 6h 42m · 147 signals processed</div>
+      </div>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+      <div class="text-center px-4 py-2 bg-surface-container rounded-lg">
+        <div class="text-h2 font-bold text-secondary" id="eng-lat">42ms</div>
+        <div class="text-label-caps text-on-surface-variant">Avg Latency</div>
+      </div>
+      <div class="text-center px-4 py-2 bg-surface-container rounded-lg">
+        <div class="text-h2 font-bold text-primary">98.2%</div>
+        <div class="text-label-caps text-on-surface-variant">Accuracy</div>
+      </div>
+      <div class="text-center px-4 py-2 bg-surface-container rounded-lg">
+        <div class="text-h2 font-bold text-tertiary">6/6</div>
+        <div class="text-label-caps text-on-surface-variant">Models OK</div>
+      </div>
+      <div class="text-center px-4 py-2 bg-surface-container rounded-lg">
+        <div class="text-h2 font-bold text-secondary">₹2.4L</div>
+        <div class="text-label-caps text-on-surface-variant">Capital Used</div>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button class="btn-danger" onclick="stopEngine()">
+        <span class="material-symbols-outlined text-[16px]">stop_circle</span>Stop
+      </button>
+      <button class="btn-success" onclick="showToast('Engine restarted','success')">
+        <span class="material-symbols-outlined text-[16px]">restart_alt</span>Restart
+      </button>
+    </div>
+  </div>
+
+  <!-- Strategy Models -->
+  <div class="col-span-12 md:col-span-8 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Active Strategy Models</h2>
+    <div class="space-y-3" id="model-list"></div>
+  </div>
+
+  <!-- Model Config -->
+  <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-5">
+    <h2 class="text-h2 font-semibold text-on-background mb-4">Risk Parameters</h2>
+    <div class="space-y-5">
+      <div>
+        <div class="flex justify-between mb-2"><label class="text-body-sm text-on-surface-variant">Max Capital / Trade</label><span class="text-data-mono text-primary" id="cap-val">₹50,000</span></div>
+        <input type="range" min="10000" max="200000" step="5000" value="50000" oninput="document.getElementById('cap-val').textContent='₹'+parseInt(this.value).toLocaleString('en-IN')">
+      </div>
+      <div>
+        <div class="flex justify-between mb-2"><label class="text-body-sm text-on-surface-variant">Stop-Loss %</label><span class="text-data-mono text-error" id="sl-val">2.0%</span></div>
+        <input type="range" min="0.5" max="5" step="0.5" value="2" oninput="document.getElementById('sl-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+      </div>
+      <div>
+        <div class="flex justify-between mb-2"><label class="text-body-sm text-on-surface-variant">Target % (R:R 1:2)</label><span class="text-data-mono text-secondary" id="tp-val">4.0%</span></div>
+        <input type="range" min="1" max="10" step="0.5" value="4" oninput="document.getElementById('tp-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+      </div>
+      <div>
+        <div class="flex justify-between mb-2"><label class="text-body-sm text-on-surface-variant">Min Confidence</label><span class="text-data-mono text-tertiary" id="conf-val">75%</span></div>
+        <input type="range" min="50" max="95" step="5" value="75" oninput="document.getElementById('conf-val').textContent=this.value+'%'">
+      </div>
+      <div>
+        <div class="flex justify-between mb-2"><label class="text-body-sm text-on-surface-variant">Max Open Positions</label><span class="text-data-mono text-on-background" id="pos-val">5</span></div>
+        <input type="range" min="1" max="15" step="1" value="5" oninput="document.getElementById('pos-val').textContent=this.value">
+      </div>
+      <div class="flex justify-between items-center pt-2 border-t border-outline-variant">
+        <span class="text-body-sm text-on-surface-variant">Auto-execute signals</span>
+        <label class="toggle"><input type="checkbox" checked id="auto-exec"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-body-sm text-on-surface-variant">Night-mode (off-hours)</span>
+        <label class="toggle"><input type="checkbox" id="night-mode"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+    <button class="mt-5 btn-primary w-full justify-center" onclick="saveConfig()">
+      <span class="material-symbols-outlined text-[18px]">save</span>Save Configuration
+    </button>
+  </div>
+
+  <!-- Performance Chart -->
+  <div class="col-span-12 md:col-span-7 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Signal Performance (30d)</h2>
+      <span class="text-body-sm text-on-surface-variant">Win Rate: <span class="text-secondary font-bold">72%</span></span>
+    </div>
+    <canvas id="perf-chart" height="200"></canvas>
+  </div>
+
+  <!-- Watchlist -->
+  <div class="col-span-12 md:col-span-5 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Watchlist</h2>
+      <button class="btn-secondary py-1.5 px-3 text-body-sm" onclick="addWatchlistItem()">
+        <span class="material-symbols-outlined text-[16px]">add</span>Add
+      </button>
+    </div>
+    <div id="watchlist" class="space-y-2"></div>
+  </div>
+
+  <!-- Execution Log -->
+  <div class="col-span-12 glass-panel rounded-xl p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-h2 font-semibold text-on-background">Execution Log</h2>
+      <button class="text-body-sm text-on-surface-variant hover:text-on-background flex items-center gap-1" onclick="showToast('Log exported','info')">
+        <span class="material-symbols-outlined text-[16px]">download</span>Export
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-body-sm">
+        <thead>
+          <tr class="text-left text-label-caps text-on-surface-variant border-b border-outline-variant">
+            <th class="pb-3 pr-4">Time</th><th class="pb-3 pr-4">Symbol</th>
+            <th class="pb-3 pr-4">Type</th><th class="pb-3 pr-4">Qty</th>
+            <th class="pb-3 pr-4">Price</th><th class="pb-3 pr-4">P&amp;L</th>
+            <th class="pb-3">Model</th>
+          </tr>
+        </thead>
+        <tbody id="exec-log" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container border-t border-outline-variant md:hidden">
+  <a href="index.html"     class="mobile-nav"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+  <a href="insights.html"  class="mobile-nav"><span class="material-symbols-outlined">psychology</span><span>Insights</span></a>
+  <a href="engine.html"    class="mobile-nav active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">settings_input_component</span><span>Engine</span></a>
+  <a href="portfolio.html" class="mobile-nav"><span class="material-symbols-outlined">account_balance_wallet</span><span>Portfolio</span></a>
+  <a href="settings.html"  class="mobile-nav"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
+</nav>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+<script src="engine.js"></script>
+</body>
+</html>

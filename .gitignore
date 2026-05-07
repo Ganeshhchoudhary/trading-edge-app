@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments
+venv/
+ENV/
+env.bak/
+venv.bak/
+backend/venv/
+
+# Environment Variables
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Logs
+logs/
+*.log
+
+# Saved Models (they are too large and generated)
+backend/saved_models/
+*.keras
+*.h5
+
+# Node / JS
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
