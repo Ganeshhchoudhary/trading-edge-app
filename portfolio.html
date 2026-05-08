@@ -13,6 +13,17 @@
   tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-container":"#5d5fef","surface-container-highest":"#333539","error":"#ffb4ab","background":"#111317","on-background":"#e2e2e8","tertiary":"#ffb95f","outline":"#908fa0","error-container":"#93000a","surface-container-high":"#282a2e","primary":"#c1c1ff","on-secondary":"#003824","secondary-container":"#00a572","on-surface-variant":"#c7c4d7","on-primary":"#1200a9","outline-variant":"#464555","surface-container":"#1e2024","on-surface":"#e2e2e8","surface":"#111317","surface-container-low":"#1a1c20","secondary":"#4edea3","surface-bright":"#37393e"},fontFamily:{"body-md":["Inter"],"body-sm":["Inter"],"h1":["Inter"],"h2":["Inter"],"h3":["Inter"],"label-caps":["Inter"],"data-mono":["Inter"]},fontSize:{"body-sm":["13px",{"lineHeight":"18px"}],"data-mono":["13px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"500"}],"h3":["16px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"h2":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px"}],"h1":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}
 </script>
 <link rel="stylesheet" href="styles.css"/>
+<link rel="manifest" href="manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trading Edge">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js');
+    });
+  }
+</script>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen pt-16 pb-20 md:pb-0">
 
@@ -215,3 +226,4 @@
 <script src="portfolio.js"></script>
 </body>
 </html>
+
