@@ -18,8 +18,6 @@ from kiteconnect import KiteTicker
 
 from backend.config import API_KEY, ACCESS_TOKEN, INSTRUMENT_TOKENS
 from backend.kite_client import get_kite
-from backend.ml_model import predict_next_day
-
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/market", tags=["market"])
 
@@ -161,6 +159,7 @@ def search_instruments(query: str, exchange: str = "NSE"):
 def get_prediction(symbol: str):
     """Predict the next day's closing price for a given symbol."""
     try:
+        from backend.ml_model import predict_next_day
         prediction = predict_next_day(symbol)
         return prediction
     except ValueError as e:
