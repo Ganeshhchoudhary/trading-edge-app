@@ -17,13 +17,10 @@ import threading
 # Global lock to prevent concurrent TensorFlow trainings
 _training_lock = threading.Lock()
 
-# Set TF logging to ERROR to reduce spam
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import tensorflow as tf
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense, LSTM, Conv1D, MaxPooling1D, Flatten, Dropout
-
 log = logging.getLogger(__name__)
+
+MODELS_DIR = Path(__file__).parent / "saved_models"
+MODELS_DIR.mkdir(exist_ok=True)
 
 MODELS_DIR = Path(__file__).parent / "saved_models"
 MODELS_DIR.mkdir(exist_ok=True)
@@ -72,6 +69,9 @@ def prepare_data(data: pd.DataFrame, symbol: str):
 
 def build_cnn_lstm_model(input_shape):
     """Build and compile the CNN-LSTM architecture."""
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Dense, LSTM, Conv1D, MaxPooling1D, Dropout
+    
     model = Sequential([
         # CNN layer for spatial/feature extraction
         Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=input_shape),
@@ -95,6 +95,7 @@ def train_or_load_model(symbol: str, months: int = 12, force_retrain: bool = Fal
     # Simple caching: retrain if force_retrain or model doesn't exist
     if not force_retrain and model_path.exists():
         try:
+            from tensorflow.keras.models import load_model
             model = load_model(model_path)
             # Ensure scaler is loaded; if not, fit quickly using recent data
             if symbol not in _scalers:
@@ -108,6 +109,7 @@ def train_or_load_model(symbol: str, months: int = 12, force_retrain: bool = Fal
         # Check again inside lock to avoid duplicate training if another thread just finished it
         if not force_retrain and model_path.exists():
             try:
+                from tensorflow.keras.models import load_model
                 return load_model(model_path)
             except:
                 pass
